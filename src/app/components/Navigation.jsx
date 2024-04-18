@@ -5,12 +5,20 @@ export const Navigation = () => {
 		<nav className={styles.nav}>
 			<div className={styles.unorderedList}>
 				<div className={styles.separator}>
-					<div className={styles.listItem}>Roamio</div>
+					<div className={styles.listItem}>
+						<a href='/'>Roamio</a>
+					</div>
 				</div>
 				<div className={styles.separator}>
-					<div className={styles.listItem}>Camera</div>
-					<div className={styles.listItem}>Dashboard</div>
-					<div className={styles.listItem}>Images</div>
+					<div className={styles.listItem}>
+						<a href='/camera'>Camera</a>
+					</div>
+					<div className={styles.listItem}>
+						<a href='/dashboard'>Dashboard</a>
+					</div>
+					<div className={styles.listItem}>
+						<a href='/images'>Images</a>
+					</div>
 				</div>
 			</div>
 		</nav>
