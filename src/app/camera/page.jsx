@@ -1,18 +1,16 @@
 'use client';
 
+import Image from 'next/image';
+import shutter from '../../../public/icons/circle-xxxs-svgrepo-com.svg';
+
+import { Button } from '../components/Button';
 import styles from './camera.module.css';
+import { useEffect } from 'react';
 
 const Camera = () => {
 	const cameraOn = () => {
 		const hdConstraints = {
-			video: {
-				width: {
-					exact: 1280,
-				},
-				height: {
-					exact: 720,
-				},
-			},
+			video: true,
 		};
 
 		navigator.mediaDevices
@@ -27,23 +25,38 @@ const Camera = () => {
 			});
 	};
 
-	// stop both mic and camera
-	function cameraOff() {
-		const video = document.querySelector('video');
-		const mediaStream = video.srcObject;
-		if (mediaStream) {
-			const tracks = mediaStream.getTracks();
-			tracks.forEach((track) => track.stop());
-			video.srcObject = null;
-		}
-	}
+	// stop both mic and camera if you need it
+
+	// const cameraOff = () => {
+	// 	console.log('Deactivating camera');
+	// 	const video = document.querySelector('video');
+	// 	const mediaStream = video.srcObject;
+	// 	if (mediaStream) {
+	// 		const tracks = mediaStream.getTracks();
+	// 		tracks.forEach((track) => track.stop());
+	// 		video.srcObject = null;
+	// 	}
+	// };
+
+	useEffect(() => {
+		cameraOn();
+	});
+
+	// CREATE LOADING STATE FOR CAMERA
 
 	return (
 		<main className={styles.container}>
 			<video autoPlay className={styles.videoContainer}></video>
-			<div className={styles.cameraControls}>
-				<button onClick={cameraOn}>Camera on</button>
-				<button onClick={cameraOff}>Camera off</button>
+			<div className={styles.buttonContainer}>
+				<div className={styles.shutter}>
+					<Button
+						image={true}
+						src={shutter}
+						height={50}
+						width={50}
+						transparent={true}
+					/>
+				</div>
 			</div>
 		</main>
 	);

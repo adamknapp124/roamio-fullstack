@@ -1,18 +1,31 @@
 .container {
-	width: 100%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
+	justify-content: space-between;
 	height: 100%;
-}
-
-.videoContainer {
 	padding: 20px;
 }
 
-.cameraControls {
+.videoContainer {
+	border-radius: 10px;
+	border: 2px solid black;
+}
+
+.shutter {
+	background-color: rgb(255, 255, 255);
+	display: inline-flex;
+	height: 52px;
+	width: 52px;
+	border-radius: 30px;
+}
+
+.buttonContainer {
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: right;
+	background-color: rgb(36, 36, 36);
 	width: 100%;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid white;
+	/* Add any styles for the button container if needed */
 }
