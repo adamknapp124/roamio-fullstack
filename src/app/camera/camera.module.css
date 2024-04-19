@@ -6,11 +6,32 @@
 	padding: 20px;
 }
 
-.videoContainer {
-	border-radius: 10px;
-	border: 2px solid black;
+.modifiedContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	height: 100%;
+	padding: 20px;
 }
 
+.videoContainer {
+	border-radius: 10px;
+	border: 2px solid rgb(0, 0, 0);
+	width: 100%;
+}
+
+.noPhoto {
+	border-radius: 10px;
+	border: 2px solid rgb(0, 0, 0);
+
+	width: 100%;
+}
+
+.videoBox {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 .shutter {
 	background-color: rgb(255, 255, 255);
 	display: inline-flex;
