@@ -1,5 +1,5 @@
 const Images = () => {
-	return <main>Images</main>;
+	return <main>Photo Gallery</main>;
 };
 
 export default Images;
