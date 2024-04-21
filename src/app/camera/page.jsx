@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import shutter from '../../../public/icons/circle-xxxs-svgrepo-com.svg';
 
 import { Button } from '../components/Button';
+import PicturePreview from '../components/PicturePreview';
 import styles from './camera.module.css';
 import { useEffect, useState } from 'react';
 
@@ -64,11 +64,7 @@ const Camera = () => {
 			{photoPreview ? (
 				<div className={styles.videoBox}>
 					<div>Image preview</div>
-					<img
-						className={styles.videoContainer}
-						src={photoPreview}
-						alt={photoPreview}
-					/>
+					<PicturePreview photoPreview={photoPreview} />
 				</div>
 			) : null}
 			<div className={styles.videoBox}>
