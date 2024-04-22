@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 const CLOUDNAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const CLOUDAPISECRET = process.env.CLOUDINARY_API_SECRET;
 const CLOUDAPIKEY = process.env.CLOUDINARY_API_KEY;
+const ValidationURL = `https://res.cloudinary.com/${CLOUDNAME}/image/upload`;
 
 export async function GET() {
-	console.log('started');
 	const res = await fetch(
 		`https://api.cloudinary.com/v1_1/${CLOUDNAME}/resources/image`,
 		{
@@ -18,6 +19,7 @@ export async function GET() {
 	);
 	const data = await res.json();
 	const images = data.resources;
+
 	return NextResponse.json({
 		data: images,
 	});
