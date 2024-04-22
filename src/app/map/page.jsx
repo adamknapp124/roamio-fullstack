@@ -1,5 +1,11 @@
 import styles from './map.module.css';
+import { GoogleMap } from '../components/GoogleMap';
 
 export default function Map() {
-	return <div>Maps</div>;
+	return (
+		<div>
+			<h1>Map</h1>
+			<GoogleMap />
+		</div>
+	);
 }
