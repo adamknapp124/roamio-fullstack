@@ -6,6 +6,7 @@ async function getImages() {
 	const res = await fetch('http://localhost:3000/api/images');
 
 	const data = await res.json();
+	console.log(data);
 	return data.data;
 }
 
@@ -18,11 +19,8 @@ const Images = async () => {
 				{images &&
 					images.map((image) => {
 						return (
-							<div>
-								<CloudImage
-									public_id={image.public_id}
-									key={image.asset_id}
-								/>
+							<div key={image.asset_id}>
+								<CloudImage public_id={image.public_id} />
 							</div>
 						);
 					})}
