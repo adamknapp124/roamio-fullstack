@@ -52,31 +52,6 @@ const storePhoto = async () => {
 };
 
 // Upload new images from other sources
-app.post('/', async (req, res) => {
-	console.log('request received');
-	// destructure the properties from the req object
-	const { image } = req.body;
-	try {
-		const uploadedImage = await cloudinary.uploader.upload(
-			image,
-			{
-				upload_preset: 'unsigned_upload',
-				allowed_formats: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'jfif', 'webp'],
-			},
-			function (error, result) {
-				if (error) {
-					console.log('Error: ', error);
-					res.status(500).json({ error: 'Failed to upload image' });
-					return;
-				}
-
-				console.log(result);
-				res.status(200).json(result);
-			}
-		);
-	} catch (error) {
-		return;
-	}
-});
+app.post('/', async (req, res) => {});
 
 export default Img;
