@@ -1,5 +1,14 @@
-const Dashboard = () => {
-	return <main>Dashboard</main>;
-};
+'use server';
 
-export default Dashboard;
+import { cookies } from 'next/headers';
+
+export default async function page() {
+	const username = cookies().get('username')?.value;
+
+	return (
+		<div>
+			<h1>Dashboard</h1>
+			<p>Welcome {username}!</p>
+		</div>
+	);
+}
