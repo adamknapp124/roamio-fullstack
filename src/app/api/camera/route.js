@@ -1,33 +1,43 @@
+import { getSignedURL } from '../../camera/actions';
 import { NextRequest, NextResponse } from 'next/server';
-import cloudinary from 'cloudinary';
 
-cloudinary.config({
-	cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-	api_key: process.env.CLOUDINARY_API_KEY,
-	api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import { cookies } from 'next/headers';
 
 // Upload new images from other sources
 export async function POST(request) {
-	try {
-		const image = await request.json();
+	const username = cookies().get('username');
+	if (username) {
+		try {
+			// Get the image from the request body
+			const image = await request.json();
+			// Remove the data URL prefix
+			const base64Data = image.replace(/^data:image\/png;base64,/, '');
+			// Convert the base64 data to a buffer
+			const buffer = Buffer.from(base64Data, 'base64');
+			// Upload the image to a cloud storage service
+			const signedURLResult = await getSignedURL();
+			if (signedURLResult.failure) {
+				console.log('Failed to get signed URL');
+				return;
+			}
+			const url = signedURLResult.success.url;
 
-		if (!image) {
-			throw new Error('Missing or empty image data in request body');
+			await fetch(url, {
+				method: 'PUT',
+				body: buffer,
+				headers: {
+					'Content-Type': 'image/png',
+				},
+				body: buffer,
+			});
+
+			return NextResponse.json({ status: 200 });
+		} catch (error) {
+			console.error('Error uploading image:', error);
+			return NextResponse.json(
+				{ error: 'Failed to upload image' },
+				{ status: 500 }
+			);
 		}
-
-		// Upload image to Cloudinary
-		const uploadedImage = await cloudinary.uploader.upload(image, {
-			upload_preset: 'unsigned_upload',
-			allowed_formats: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'jfif', 'webp'],
-		});
-
-		console.log('Image uploaded:', uploadedImage);
-		return NextResponse.json(uploadedImage, { status: 200 });
-	} catch (error) {
-		console.error('Error uploading image:', error);
-		return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
 	}
-
-	return new Response();
 }

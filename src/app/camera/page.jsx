@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 const Camera = () => {
 	const [photoPreview, setPhotoPreview] = useState();
+	const [file, setFile] = useState();
 
 	const cameraOn = () => {
 		const hdConstraints = {
@@ -18,7 +19,7 @@ const Camera = () => {
 		navigator.mediaDevices
 			.getUserMedia(hdConstraints)
 			.then((stream) => {
-				console.log('Activating camera');
+				// console.log('Activating camera');
 				const video = document.querySelector('video');
 				video.srcObject = stream;
 			})
@@ -29,7 +30,6 @@ const Camera = () => {
 
 	const takePicture = (e) => {
 		e.preventDefault();
-		console.log('Freezing life');
 		const video = document.querySelector('video');
 		const canvas = document.createElement('canvas');
 		canvas.width = video.videoWidth;
@@ -38,6 +38,7 @@ const Camera = () => {
 		context.drawImage(video, 0, 0, canvas.width, canvas.height);
 		const dataURL = canvas.toDataURL('image/png');
 		setPhotoPreview(dataURL);
+		setFile(dataURL);
 	};
 
 	// stop both mic and camera if you need it
@@ -84,6 +85,7 @@ const Camera = () => {
 						width={50}
 						transparent={true}
 						purpose={takePicture}
+						file={file}
 					/>
 				</div>
 			</div>

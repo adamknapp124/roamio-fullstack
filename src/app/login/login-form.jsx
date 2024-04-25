@@ -2,13 +2,22 @@
 
 import { useState } from 'react';
 import { login } from './actions';
+import { logout } from './actions';
 
 export default function LoginForm() {
 	const [username, setUsername] = useState('');
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await login({ username });
+		try {
+			await login({ username });
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const handleLogout = async () => {
+		await logout({ username });
 	};
 
 	return (
@@ -26,6 +35,7 @@ export default function LoginForm() {
 				/>
 				<button type='submit'>Login</button>
 			</form>
+			<button onClick={handleLogout}>Logout</button>
 		</div>
 	);
 }

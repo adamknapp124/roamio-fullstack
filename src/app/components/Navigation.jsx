@@ -1,13 +1,17 @@
-import styles from './componentStyles/Navigation.module.css';
+import styles from './componentStyles/navigation.module.css';
 
 import camera from '../../../public/icons/camera-svgrepo-com.svg';
-import shutter from '../../../public/icons/diaphragm.png';
+import logout from '../../../public/icons/logout-3-svgrepo-com.svg';
+import login from '../../../public/icons/login-3-svgrepo-com.svg';
 import dashboard from '../../../public/icons/dashboard-svgrepo-com.svg';
 import images from '../../../public/icons/images-svgrepo-com.svg';
 import map from '../../../public/icons/treasure-map.png';
 import Image from 'next/image';
 
+import { cookies } from 'next/headers';
+
 export const Navigation = () => {
+	const username = cookies().get('username');
 	return (
 		<nav className={styles.nav}>
 			<div className={styles.separator}>
@@ -29,6 +33,16 @@ export const Navigation = () => {
 				<div className={styles.navItem}>
 					<a href='/images'>
 						<Image src={images} alt='images' height={35} width={35} />
+					</a>
+				</div>
+				<div className={styles.navItem}>
+					<a href='/login'>
+						<Image
+							src={username && username ? logout : login}
+							alt='images'
+							height={35}
+							width={35}
+						/>
 					</a>
 				</div>
 			</div>

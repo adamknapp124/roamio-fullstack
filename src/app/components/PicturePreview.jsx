@@ -1,6 +1,6 @@
 'use client';
 
-export default function PicturePreview({ photoPreview }) {
+export default function PicturePreview({ photoPreview, file }) {
 	async function handleClick() {
 		try {
 			const res = await fetch('http://localhost:3000/api/camera', {
@@ -13,7 +13,6 @@ export default function PicturePreview({ photoPreview }) {
 
 			if (res.ok) {
 				const data = await res.json();
-				console.log(data);
 				return data;
 			}
 		} catch (error) {
@@ -24,6 +23,7 @@ export default function PicturePreview({ photoPreview }) {
 	return (
 		<>
 			<img src={photoPreview} alt='photo' />
+			<input type='file' filename={photoPreview} />
 			<button onClick={handleClick}>Save Photo</button>
 		</>
 	);
