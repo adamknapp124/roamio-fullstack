@@ -17,6 +17,7 @@ export default function LoginForm() {
 	};
 
 	const handleLogout = async () => {
+		alert('Logging out');
 		await logout({ username });
 	};
 

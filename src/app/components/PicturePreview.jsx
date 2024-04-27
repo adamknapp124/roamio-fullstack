@@ -1,6 +1,6 @@
 'use client';
 
-export default function PicturePreview({ photoPreview, file }) {
+export default function PicturePreview({ photoPreview }) {
 	async function handleClick() {
 		try {
 			const res = await fetch('http://localhost:3000/api/camera', {

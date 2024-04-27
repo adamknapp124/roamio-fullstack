@@ -1,43 +1,52 @@
 import { getSignedURL } from '../../camera/actions';
-import { NextRequest, NextResponse } from 'next/server';
 
-import { cookies } from 'next/headers';
+const fs = require('fs');
+import crypto from 'crypto';
+import { NextResponse } from 'next/server';
 
-// Upload new images from other sources
+// Compute the SHA-256 checksum of a file
+const hashBuffer = async (file) => {
+	// Read the file as an ArrayBuffer
+	const newBuffer = await file.arrayBuffer();
+	// Compute the SHA-256 checksum
+	const hashBuffer = await crypto.subtle.digest('SHA-256', newBuffer);
+	// Convert the buffer to a hexadecimal string
+	const hashArray = Array.from(new Uint8Array(hashBuffer));
+	const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
+	return hashHex;
+};
+
 export async function POST(request) {
-	const username = cookies().get('username');
-	if (username) {
-		try {
-			// Get the image from the request body
-			const image = await request.json();
-			// Remove the data URL prefix
-			const base64Data = image.replace(/^data:image\/png;base64,/, '');
-			// Convert the base64 data to a buffer
-			const buffer = Buffer.from(base64Data, 'base64');
-			// Upload the image to a cloud storage service
-			const signedURLResult = await getSignedURL();
-			if (signedURLResult.failure) {
-				console.log('Failed to get signed URL');
-				return;
-			}
-			const url = signedURLResult.success.url;
+	try {
+		// Get the image from the request body
+		const image = await request.json();
+		// Remove the data URL prefix
+		const base64Data = image.replace(/^data:image\/png;base64,/, '');
+		// Convert the base64 data to a buffer
+		const buffer = Buffer.from(base64Data, 'base64');
+		// Create a file from the buffer
+		const file = new File([buffer], 'image.png', { type: 'image/png' });
 
-			await fetch(url, {
-				method: 'PUT',
-				body: buffer,
-				headers: {
-					'Content-Type': 'image/png',
-				},
-				body: buffer,
-			});
-
-			return NextResponse.json({ status: 200 });
-		} catch (error) {
-			console.error('Error uploading image:', error);
-			return NextResponse.json(
-				{ error: 'Failed to upload image' },
-				{ status: 500 }
-			);
+		// Compute the SHA-256 checksum of the file
+		const checksum = await hashBuffer(file);
+		const signedURLResult = await getSignedURL(file.type, file.size, checksum);
+		if (signedURLResult.failure !== undefined) {
+			console.log('Failed to get signed URL');
+			return;
 		}
+		const url = signedURLResult.success.url;
+
+		await fetch(url, {
+			method: 'PUT',
+			body: buffer,
+			headers: {
+				'Content-Type': file.type,
+			},
+		});
+
+		return NextResponse.json({ status: 200 });
+	} catch (error) {
+		console.error('Error uploading image:', error);
+		return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });
 	}
 }
