@@ -4,14 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { Button } from '../components/Button';
 
-async function getUsers() {
-	// Fetch users from the Database
-	const res = await fetch('http://localhost:3000/api/users');
-	// Parse the response
-	const data = await res.json();
-	// Return the data
-	return data.data;
-}
+import { getUsers } from '../globalActions';
 
 async function handleLogout() {
 	// Remove the username cookie

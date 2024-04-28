@@ -1,13 +1,12 @@
 'use client';
-
-import shutter from '../../../public/icons/circle-xxxs-svgrepo-com.svg';
-
-import { Button } from '../components/Button';
-import PicturePreview from '../components/PicturePreview';
-import styles from './camera.module.css';
 import { useEffect, useState } from 'react';
 
-const Camera = () => {
+import shutter from '../../../public/icons/circle-xxxs-svgrepo-com.svg';
+import PicturePreview from '../components/PicturePreview';
+import { Button } from '../components/Button';
+import styles from './camera.module.css';
+
+export default function page() {
 	const [photoPreview, setPhotoPreview] = useState();
 	const [file, setFile] = useState();
 
@@ -28,8 +27,9 @@ const Camera = () => {
 			});
 	};
 
-	const takePicture = (e) => {
+	const takePicture = async (e) => {
 		e.preventDefault();
+
 		const video = document.querySelector('video');
 		const canvas = document.createElement('canvas');
 		canvas.width = video.videoWidth;
@@ -91,6 +91,4 @@ const Camera = () => {
 			</div>
 		</main>
 	);
-};
-
-export default Camera;
+}

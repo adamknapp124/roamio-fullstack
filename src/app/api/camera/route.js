@@ -2,6 +2,7 @@ import { getSignedURL } from '../../camera/actions';
 
 const fs = require('fs');
 import crypto from 'crypto';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 // Compute the SHA-256 checksum of a file
@@ -19,9 +20,12 @@ const hashBuffer = async (file) => {
 export async function POST(request) {
 	try {
 		// Get the image from the request body
-		const image = await request.json();
+		const photoData = await request.json();
+		const location = photoData.location;
+		const photo = photoData.photoPreview;
+		console.log(location);
 		// Remove the data URL prefix
-		const base64Data = image.replace(/^data:image\/png;base64,/, '');
+		const base64Data = photo.replace(/^data:image\/png;base64,/, '');
 		// Convert the base64 data to a buffer
 		const buffer = Buffer.from(base64Data, 'base64');
 		// Create a file from the buffer
@@ -29,7 +33,12 @@ export async function POST(request) {
 
 		// Compute the SHA-256 checksum of the file
 		const checksum = await hashBuffer(file);
-		const signedURLResult = await getSignedURL(file.type, file.size, checksum);
+		const signedURLResult = await getSignedURL(
+			file.type,
+			file.size,
+			checksum,
+			location
+		);
 		if (signedURLResult.failure !== undefined) {
 			console.log('Failed to get signed URL');
 			return;
@@ -44,7 +53,7 @@ export async function POST(request) {
 			},
 		});
 
-		return NextResponse.json({ status: 200 });
+		return NextResponse.json({ url }, { status: 200 });
 	} catch (error) {
 		console.error('Error uploading image:', error);
 		return NextResponse.json({ error: 'Failed to upload image' }, { status: 500 });

@@ -1,41 +1,26 @@
 import { NextResponse } from 'next/server';
-
-import { S3Client, ListBucketsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-
-const CLOUDNAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-const CLOUDAPISECRET = process.env.CLOUDINARY_API_SECRET;
-const CLOUDAPIKEY = process.env.CLOUDINARY_API_KEY;
-
-const bucketName = process.env.AWS_BUCKET_NAME;
-const bucketRegion = process.env.AWS_BUCKET_REGION;
-const accessKey = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-
-const s3 = new S3Client({
-	credentials: {
-		accessKeyId: accessKey,
-		secretAccessKey: secretAccessKey,
-	},
-	region: bucketRegion,
-});
+import { dbConnection } from '../db.js';
 
 export async function GET() {
-	const res = await fetch(
-		`https://api.cloudinary.com/v1_1/${CLOUDNAME}/resources/image`,
-		{
-			headers: {
-				Authorization: `Basic ${Buffer.from(
-					CLOUDAPIKEY + ':' + CLOUDAPISECRET
-				).toString('base64')}`,
-			},
-		}
-	);
-	const data = await res.json();
-	const images = data.resources;
+	try {
+		// Create a connection to the MySQL database
+		const connection = await dbConnection();
 
-	return NextResponse.json({
-		data: images,
-	});
+		// Query the database
+		const [rows, fields] = await connection.query('SELECT * FROM photos');
+
+		// Close the connection
+		await connection.end();
+
+		// Send data back to the client
+		return NextResponse.json({
+			// Return the rows from the database
+			data: rows,
+		});
+	} catch (error) {
+		// Log the error to the console
+		console.error('Error fetching data from MySQL:', error);
+		// Return an error response
+		return NextResponse.error({ status: 500, message: 'Failed to fetch users' });
+	}
 }
-
-export async function POST() {}
