@@ -13,12 +13,11 @@ export async function getUsers() {
 
 export async function getImages() {
 	const res = await fetch('http://localhost:3000/api/images');
-
 	const data = await res.json();
 	return data.data;
 }
 
-export async function getUserById() {
+export async function getUserById(id) {
 	const res = await fetch('http://localhost:3000/api/users/:id');
 	const data = await res.json();
 	const user = data.data;

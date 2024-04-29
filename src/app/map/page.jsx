@@ -1,11 +1,14 @@
-import styles from './map.module.css';
-import { GoogleMap } from '../components/GoogleMap';
+import GoogleMaps from '../components/GoogleMaps';
 
-export default function Map() {
+import { getImages } from '../globalActions';
+
+export default async function Map() {
+	const imageData = await getImages();
+
 	return (
 		<div>
 			<h1>Map</h1>
-			<GoogleMap />
+			<GoogleMaps imageData={imageData} />
 		</div>
 	);
 }
