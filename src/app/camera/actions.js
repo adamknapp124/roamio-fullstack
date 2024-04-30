@@ -1,5 +1,6 @@
 'use server';
 
+import { getDate } from '../utils/getDate';
 import { dbConnection } from '../api/db';
 
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -30,10 +31,13 @@ const allowedFileTypes = [
 
 // Get signed URL for uploading photos
 export async function getSignedURL(type, size, checksum, location) {
+	const date = await getDate();
+	// Update user_id to current user id after auth implementation
+	const user_id = 1;
 	// Replace this with auth implementation later
 	const username = cookies().get('username').value;
-	const lon = location.longitude;
-	const lat = location.latitude;
+	const longitude = location.longitude;
+	const latitude = location.latitude;
 	if (!username) {
 		return { failure: { message: 'Not logged in' } };
 	}
@@ -54,6 +58,7 @@ export async function getSignedURL(type, size, checksum, location) {
 		Metadata: {
 			user: username,
 			ChecksumSHA256: checksum,
+			date: date,
 		},
 	});
 
@@ -66,8 +71,8 @@ export async function getSignedURL(type, size, checksum, location) {
 	try {
 		const connection = await dbConnection();
 		await connection.query(
-			'INSERT INTO photos (url, user, lon, lat) VALUES (?, ?, ?, ?)',
-			[url, username, lon, lat]
+			'INSERT INTO images (url, user, longitude, latitude, created_at, file_size, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+			[url, username, longitude, latitude, date, size, user_id]
 		);
 		await connection.end();
 	} catch (error) {

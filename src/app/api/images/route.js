@@ -7,7 +7,7 @@ export async function GET() {
 		const connection = await dbConnection();
 
 		// Query the database
-		const [rows, fields] = await connection.query('SELECT * FROM photos');
+		const [rows, fields] = await connection.query('SELECT * FROM images');
 
 		// Close the connection
 		await connection.end();

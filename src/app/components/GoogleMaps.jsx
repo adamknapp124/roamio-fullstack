@@ -7,10 +7,8 @@ import styles from './componentStyles/GoogleMaps.module.css';
 
 export default function GoogleMaps({ imageData }) {
 	const mapRef = useRef(null);
+	console.log(imageData);
 
-	console.log('lat: ', imageData[0].lat);
-
-	console.log(typeof Number(imageData[0].lat));
 	useEffect(() => {
 		const initializeMap = async () => {
 			const loader = new Loader({
@@ -22,8 +20,8 @@ export default function GoogleMaps({ imageData }) {
 
 			const options = {
 				center: {
-					lat: Number(imageData[1].lat),
-					lng: Number(imageData[1].lon),
+					lat: Number(imageData[1].latitude),
+					lng: Number(imageData[1].longitude),
 				},
 				zoom: 8,
 				mapId: 'Nextjs-Maps',
@@ -37,8 +35,8 @@ export default function GoogleMaps({ imageData }) {
 				const marker = new google.maps.marker.AdvancedMarkerElement({
 					map: map,
 					position: {
-						lat: Number(image.lat),
-						lng: Number(image.lon),
+						lat: Number(image.latitude),
+						lng: Number(image.longitude),
 					},
 				});
 			});

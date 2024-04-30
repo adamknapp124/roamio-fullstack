@@ -1,6 +1,6 @@
 import styles from './images.module.css';
 import { getImages } from '../globalActions';
-import { formatDate } from '../utils/formatDate';
+import { getDate } from '../utils/getDate';
 
 export default async function page() {
 	const images = await getImages();

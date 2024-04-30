@@ -1,9 +1,9 @@
 import { getSignedURL } from '../../camera/actions';
 
-const fs = require('fs');
 import crypto from 'crypto';
-import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
+
+import { getDate } from '../../utils/getDate';
 
 // Compute the SHA-256 checksum of a file
 const hashBuffer = async (file) => {
@@ -18,12 +18,12 @@ const hashBuffer = async (file) => {
 };
 
 export async function POST(request) {
+	const date = await getDate();
 	try {
 		// Get the image from the request body
 		const photoData = await request.json();
 		const location = photoData.location;
 		const photo = photoData.photoPreview;
-		console.log(location);
 		// Remove the data URL prefix
 		const base64Data = photo.replace(/^data:image\/png;base64,/, '');
 		// Convert the base64 data to a buffer
@@ -37,7 +37,8 @@ export async function POST(request) {
 			file.type,
 			file.size,
 			checksum,
-			location
+			location,
+			date
 		);
 		if (signedURLResult.failure !== undefined) {
 			console.log('Failed to get signed URL');
