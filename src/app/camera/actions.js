@@ -71,7 +71,7 @@ export async function getSignedURL(type, size, checksum, location) {
 	try {
 		const connection = await dbConnection();
 		await connection.query(
-			'INSERT INTO images (url, user, longitude, latitude, created_at, file_size, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
+			'INSERT INTO gallery (url, user, longitude, latitude, created_at, file_size, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
 			[url, username, longitude, latitude, date, size, user_id]
 		);
 		await connection.end();

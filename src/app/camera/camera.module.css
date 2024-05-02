@@ -1,0 +1,83 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	height: 100%;
+	padding: 10px;
+	background-color: white;
+}
+
+.cameraContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 5px;
+	border-radius: 3px;
+	text-align: center;
+}
+
+.cameraFeed {
+	border-radius: 3px;
+}
+
+.photoContainer {
+	display: flex;
+	justify-content: center;
+	flex-grow: 1;
+	overflow: hidden;
+	height: 120px;
+}
+
+.photo {
+	height: 100%;
+}
+
+.buttonContainer {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	flex-grow: 1;
+	padding: 5px;
+	gap: 3px;
+}
+
+.button:first-child {
+	font-weight: bold;
+	border: 2px solid rgb(0, 0, 0);
+	border-radius: 3px;
+}
+
+.button:nth-child(2) {
+	background: linear-gradient(45deg, rgb(139, 18, 18), rgb(255, 0, 0));
+	border: 2px solid rgb(255, 0, 0);
+	color: white;
+	font-weight: semi-bold;
+}
+
+.button {
+	flex-grow: 1;
+	height: 100%;
+	width: 50%;
+	border: 2px solid rgb(255, 0, 0);
+	border-radius: 3px;
+}
+
+.shutterContainer {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	/* background-color: rgb(0, 0, 0); */
+	padding: 5px;
+}
+
+.shutter {
+	background-color: white;
+	border-radius: 50%;
+	width: 65px;
+	height: 65px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,6 +1,12 @@
-.previewBox {
+.imageContainer {
 	display: flex;
-	flex-direction: column;
+	gap: 3px;
 	align-items: center;
-	gap: 10px;
+	justify-content: flex-start;
+	overflow-x: auto;
+}
+
+.image {
+	width: 50%;
+	height: auto;
 }

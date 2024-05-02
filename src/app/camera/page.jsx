@@ -1,34 +1,41 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import shutter from '../../../public/icons/circle-xxxs-svgrepo-com.svg';
-import { Button } from '../components/Button';
+import shutter from '../../../public/icons/diaphragm.png';
+import PhotoPreview from '../components/PicturePreview';
+import getGeolocation from '../libs/getGeolocation';
 import styles from './camera.module.css';
+import Image from 'next/image';
+import LoadingState from '../components/LoadingState';
 
 export default function page() {
 	const [photoPreview, setPhotoPreview] = useState();
 	const [file, setFile] = useState();
+	const [cameraStarted, setCameraStarted] = useState(false);
 
 	const cameraOn = () => {
 		const hdConstraints = {
-			video: { width: 400, height: 620 },
+			video: { width: 768, height: 1024 },
 		};
 
 		navigator.mediaDevices
 			.getUserMedia(hdConstraints)
 			.then((stream) => {
-				// console.log('Activating camera');
 				const video = document.querySelector('video');
 				video.srcObject = stream;
+				setCameraStarted(true);
 			})
 			.catch((error) => {
 				console.log('Error accessing camera:', error);
 			});
 	};
 
-	const takePicture = async (e) => {
-		e.preventDefault();
+	useEffect(() => {
+		cameraOn();
+	}, [file]);
 
+	const handleClick = async (e) => {
+		const location = await getGeolocation();
 		const video = document.querySelector('video');
 		const canvas = document.createElement('canvas');
 		canvas.width = video.videoWidth;
@@ -38,49 +45,53 @@ export default function page() {
 		const dataURL = canvas.toDataURL('image/png');
 		setPhotoPreview(dataURL);
 		setFile(dataURL);
+
+		try {
+			const response = await fetch('/api/camera', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ file: dataURL, location }),
+			});
+
+			if (response.ok) {
+				console.log('Image uploaded successfully!');
+			} else {
+				console.error('Failed to upload image.');
+			}
+			const data = await response.json();
+			console.log(data);
+		} catch (error) {
+			console.error('Failed to upload image:', error);
+		}
 	};
 
-	// stop both mic and camera if you need it
-
-	// const cameraOff = () => {
-	// 	console.log('Deactivating camera');
-	// 	const video = document.querySelector('video');
-	// 	const mediaStream = video.srcObject;
-	// 	if (mediaStream) {
-	// 		const tracks = mediaStream.getTracks();
-	// 		tracks.forEach((track) => track.stop());
-	// 		video.srcObject = null;
-	// 	}
-	// };
-
-	useEffect(() => {
-		cameraOn();
-	});
-
-	// CREATE LOADING STATE FOR CAMERA
-
 	return (
-		<main>
-			<div className={styles.videoBox}>
-				<div>Camera Feed</div>
-				<video
-					autoPlay
-					className={
-						photoPreview ? styles.videoContainer : styles.noPhoto
-					}></video>
-			</div>
-			<div className={styles.buttonContainer}>
-				<div className={styles.shutter}>
-					<Button
-						image={true}
-						src={shutter}
-						height={50}
-						width={50}
-						transparent={true}
-						purpose={takePicture}
-						file={file}
-					/>
+		<main className={styles.container}>
+			<div className={styles.cameraContainer}>
+				<h1>Camera Feed</h1>
+				<video autoPlay className={styles.cameraFeed} />
+
+				<div className={styles.photoContainer}>
+					<div className={styles.photo}>
+						<PhotoPreview photoPreview={photoPreview} />
+					</div>
+					<div className={styles.photo}></div>
 				</div>
+			</div>
+			{cameraStarted ? (
+				<div className={styles.buttonContainer}>
+					<button className={styles.button}>Save all</button>
+					<button className={styles.button}>Delete all</button>
+				</div>
+			) : (
+				<LoadingState />
+			)}
+			<div className={styles.shutterContainer}>
+				<button onClick={handleClick} className={styles.shutter}>
+					<Image src={shutter} alt='shutter' width={50} height={50} />
+				</button>
 			</div>
 		</main>
 	);
