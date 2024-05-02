@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 export async function login({ username }) {
 	console.log('login', username);
 	cookies().set('username', username);
-	redirect('/dashboard');
+	redirect('/');
 	return { message: 'ok' };
 }
 

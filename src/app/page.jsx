@@ -1,7 +1,39 @@
-import Image from 'next/image';
-import styles from './page.module.css';
-import { Navigation } from './components/Navigation';
+'use server';
 
-export default function Home() {
-	return <main className={styles.main}>Home</main>;
+import { cookies } from 'next/headers';
+
+import { getUsers } from './globalActions';
+
+// Temporary until auth is implemented
+async function handleLogout() {
+	cookies().set('username', '', { maxAge: 0 });
+}
+
+export default async function page({
+	buttonText,
+	purpose,
+	src,
+	image,
+	width,
+	height,
+	transparent,
+}) {
+	const username = cookies().get('username')?.value;
+
+	return (
+		<>
+			{username && (
+				<div>
+					<h1>Dashboard</h1>
+					<p>Welcome {username}!</p>
+				</div>
+			)}
+			{!username && (
+				<div>
+					<h1>Dashboard</h1>
+					<p>Welcome Guest</p>
+				</div>
+			)}
+		</>
+	);
 }

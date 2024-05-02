@@ -18,21 +18,25 @@ export const Navigation = () => {
 				<div className={styles.navItem}>
 					<a href='/camera'>
 						<Image src={camera} alt='camera' height={35} width={35} />
+						<span>Camera</span>
 					</a>
 				</div>
 				<div className={styles.navItem}>
 					<a href='/map'>
-						<Image src={map} alt='map' height={35} width={35} />
+						<Image src={map} alt='places' height={35} width={35} />
+						<span>Places</span>
 					</a>
 				</div>
 				<div className={styles.navItem}>
-					<a href='/dashboard'>
+					<a href='/'>
 						<Image src={dashboard} alt='dashboard' height={35} width={35} />
+						<span>Dashboard</span>
 					</a>
 				</div>
 				<div className={styles.navItem}>
-					<a href='/images'>
-						<Image src={images} alt='images' height={35} width={35} />
+					<a href='/gallery'>
+						<Image src={images} alt='gallery' height={35} width={35} />
+						<span>Gallery</span>
 					</a>
 				</div>
 				<div className={styles.navItem}>
@@ -43,6 +47,8 @@ export const Navigation = () => {
 							height={35}
 							width={35}
 						/>
+						{/* Login/Logout if used signed in/signed out */}
+						<span>{username && username ? 'logout' : 'login'}</span>
 					</a>
 				</div>
 			</div>

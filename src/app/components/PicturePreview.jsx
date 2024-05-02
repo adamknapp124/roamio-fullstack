@@ -1,6 +1,7 @@
 'use client';
 
 import getGeolocation from '../libs/getGeolocation';
+import styles from './componentStyles/picturePreview.module.css';
 
 export default function PicturePreview({ photoPreview }) {
 	async function handleClick() {
@@ -25,10 +26,9 @@ export default function PicturePreview({ photoPreview }) {
 		}
 	}
 	return (
-		<>
+		<div className={styles.previewBox}>
 			<img id='image' src={photoPreview} alt='photo' />
-			<input type='file' filename={photoPreview} />
 			<button onClick={handleClick}>Save Photo</button>
-		</>
+		</div>
 	);
 }

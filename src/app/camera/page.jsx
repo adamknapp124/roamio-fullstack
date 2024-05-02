@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 
 import shutter from '../../../public/icons/circle-xxxs-svgrepo-com.svg';
-import PicturePreview from '../components/PicturePreview';
 import { Button } from '../components/Button';
 import styles from './camera.module.css';
 
@@ -12,7 +11,7 @@ export default function page() {
 
 	const cameraOn = () => {
 		const hdConstraints = {
-			video: true,
+			video: { width: 400, height: 620 },
 		};
 
 		navigator.mediaDevices
@@ -61,13 +60,7 @@ export default function page() {
 	// CREATE LOADING STATE FOR CAMERA
 
 	return (
-		<main className={photoPreview ? styles.container : styles.modifiedContainer}>
-			{photoPreview ? (
-				<div className={styles.videoBox}>
-					<div>Image preview</div>
-					<PicturePreview photoPreview={photoPreview} />
-				</div>
-			) : null}
+		<main>
 			<div className={styles.videoBox}>
 				<div>Camera Feed</div>
 				<video
