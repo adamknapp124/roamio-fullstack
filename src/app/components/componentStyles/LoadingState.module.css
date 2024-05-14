@@ -1,4 +1,6 @@
 .loading {
 	height: 100%;
 	display: flex;
+	color: white;
+	font-weight: bold;
 }

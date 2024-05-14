@@ -22,8 +22,9 @@ export async function POST(request) {
 	try {
 		// Get the image from the request body
 		const photoData = await request.json();
+		console.log(photoData);
 		const location = photoData.location;
-		const photo = photoData.photoPreview;
+		const photo = photoData.file;
 		// Remove the data URL prefix
 		const base64Data = photo.replace(/^data:image\/png;base64,/, '');
 		// Convert the base64 data to a buffer

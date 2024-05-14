@@ -7,6 +7,8 @@
 	background-color: rgb(36, 36, 36);
 	position: sticky;
 	bottom: 0;
+	z-index: 1000; /* Ensure it's above other content */
+	width: 100%; /* Make it stretch across the screen */
 }
 
 .unorderedList {

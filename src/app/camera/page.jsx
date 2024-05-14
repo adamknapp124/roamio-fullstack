@@ -70,15 +70,24 @@ export default function page() {
 	return (
 		<main className={styles.container}>
 			<div className={styles.cameraContainer}>
-				<h1>Camera Feed</h1>
-				<video autoPlay className={styles.cameraFeed} />
-
-				<div className={styles.photoContainer}>
-					<div className={styles.photo}>
-						<PhotoPreview photoPreview={photoPreview} />
-					</div>
-					<div className={styles.photo}></div>
+				<div className={styles.line}>
+					<h1>Camera Feed</h1>
 				</div>
+				<video autoPlay className={styles.cameraFeed} />
+				{cameraStarted ? (
+					<div className={styles.photoContainer}>
+						{photoPreview ? (
+							<div className={styles.photo}>
+								<PhotoPreview photoPreview={photoPreview} />
+							</div>
+						) : (
+							<div className={styles.loadingState}>
+								Screen your pictures here
+							</div>
+						)}
+						<div className={styles.photo}></div>
+					</div>
+				) : null}
 			</div>
 			{cameraStarted ? (
 				<div className={styles.buttonContainer}>

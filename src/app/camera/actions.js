@@ -34,6 +34,7 @@ export async function getSignedURL(type, size, checksum, location) {
 	const date = await getDate();
 	// Update user_id to current user id after auth implementation
 	const user_id = 1;
+	const confirmed = 0;
 	// Replace this with auth implementation later
 	const username = cookies().get('username').value;
 	const longitude = location.longitude;
@@ -71,8 +72,8 @@ export async function getSignedURL(type, size, checksum, location) {
 	try {
 		const connection = await dbConnection();
 		await connection.query(
-			'INSERT INTO gallery (url, user, longitude, latitude, created_at, file_size, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-			[url, username, longitude, latitude, date, size, user_id]
+			'INSERT INTO gallery (url, user, longitude, latitude, created_at, file_size, user_id, confirmed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+			[url, username, longitude, latitude, date, size, user_id, confirmed]
 		);
 		await connection.end();
 	} catch (error) {
