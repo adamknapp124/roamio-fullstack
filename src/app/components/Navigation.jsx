@@ -1,4 +1,4 @@
-// import styles from './componentStyles/navigation.module.css';
+import styles from './componentStyles/navigation.module.css';
 
 import camera from '../../../public/icons/camera-svgrepo-com.svg';
 import logout from '../../../public/icons/logout-3-svgrepo-com.svg';
