@@ -1,12 +1,12 @@
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 
-export async function dbConnection() {
+export function dbConnection() {
 	console.log('connection requested');
-	const connection = await mysql.createConnection({
+	const connection = mysql.createConnection({
 		host: 'my-roamio-db.ct0qkum0i4un.us-west-2.rds.amazonaws.com',
 		user: 'admin',
-		password: 'md1k8xZ3SmlQeYXeuxnJ',
 		database: 'roamio',
+		password: 'md1k8xZ3SmlQeYXeuxnJ',
 	});
 	return connection;
 }
