@@ -1,13 +1,13 @@
 'use server';
 
 export async function getUsers() {
-	const res = await fetch('http://35.94.175.53/api/users');
+	const res = await fetch('http://35.94.175.53:3000/api/users');
 	const data = await res.json();
 	return data.data;
 }
 
 export async function getImages() {
-	const res = await fetch('http://35.94.175.53/api/images');
+	const res = await fetch('http://35.94.175.53:3000/api/images');
 	const data = await res.json();
 	return data.data;
 }
