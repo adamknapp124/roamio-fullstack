@@ -3,7 +3,7 @@ import { getImages } from '../globalActions';
 
 export default async function page() {
 	const images = await getImages();
-	console.log('sdfsdfsdfsdf', images);
+	console.log('Images: ', images);
 	return (
 		<main>
 			<h1>Images</h1>
